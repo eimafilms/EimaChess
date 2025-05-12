@@ -201,4 +201,142 @@ function onUserMoveAttempt(source, target) { // chessboard.js passes source and 
     currentMoveIndex++; // Move to the next step in the solution
 
     // --- Check if the lesson is completed ---
-    if (currentMoveIndex >= lesson.solution.length)
+    if (currentMoveIndex >= lesson.solution.length) {
+        updateStatus("Lesson complete! Well done!", 'correct');
+        disableUserInput(); // Disable input after completing the lesson
+        // Optionally auto-advance after a delay
+        // setTimeout(nextLesson, 2000);
+    } else {
+        // Lesson is not complete, update status and prepare for the next user move
+        const nextExpectedMove = lesson.solution[currentMoveIndex];
+         updateStatus(`Correct! Now play ${nextExpectedMove}`, 'correct');
+        // Re-enable input (though onDrop not returning 'snapback' implicitly does this)
+         enableUserInput();
+    }
+
+    // CHANGE: onDrop must return nothing or undefined if the move is successful
+    // This tells chessboard.js to keep the piece at the target square
+    return; // Indicate successful move
+}
+
+// CHANGE: Add onSnapbackEnd callback to ensure board is reset after illegal move
+function onSnapbackEnd() {
+    // This is called after a piece snaps back (i.e., an illegal/incorrect move)
+    // Ensure the game state and board display match after an incorrect move snapback
+    // The game state was already reverted by game.undo() in onUserMoveAttempt
+    // The board visually snapped back automatically, but explicitly setting position can ensure sync
+    if (board) {
+       board.position(game.fen()); // Ensure the board is reset to the current game state FEN
+    }
+    console.log("Snapback ended. Board reset to:", game.fen());
+}
+
+
+// CHANGE: These functions need to use chessboard.js methods
+function disableUserInput() {
+     console.log("Disabling user input");
+     if (board) {
+         // To disable input, use board.draggable = false and potentially disable the source squares
+         // chessboard.js v0.3.0 doesn't have a simple enable/disable all drag/drop.
+         // The common way is to set the 'draggable' config option.
+         // Let's just set draggable to false in the config and update.
+         // A simpler way might be to just remove the onDrop handler temporarily? No, that's hacky.
+         // Let's try setting the draggable config option.
+         board.config.draggable = false; // Disable dragging
+         // No need to redraw immediately, the next interaction will use this config
+         console.log("Board dragging disabled");
+     } else {
+         console.warn("Board not initialized, cannot disable input.");
+     }
+}
+
+function enableUserInput() {
+    console.log("Enabling user input");
+    if (board && !game.gameOver()) {
+         // Enable drag/drop generally. Move validation in onUserMoveAttempt handles correctness.
+         board.config.draggable = true; // Enable dragging
+         // No need to redraw immediately
+          console.log("Board dragging enabled");
+     } else {
+         console.warn("Board not initialized or game over, cannot enable input.");
+     }
+}
+
+
+// updateStatus remains the same
+function updateStatus(message, type) {
+    // Check if status element exists before updating it
+     if (statusElement) {
+        statusElement.textContent = message;
+        // Reset classes and add the appropriate one
+        statusElement.className = 'game-status'; // Clear previous classes
+        if (type) {
+            statusElement.classList.add(`status-${type}`);
+        } else {
+            statusElement.classList.add('status-info'); // Default class
+        }
+     } else {
+         console.warn("Status element not found, cannot update status:", message);
+     }
+}
+
+
+// --- Event Listeners ---
+console.log("Checking function types before adding listeners:");
+console.log("Type of nextLesson:", typeof nextLesson); // Should be "function"
+console.log("Type of prevLesson:", typeof prevLesson); // Should be "function"
+console.log("Type of retryLesson:", typeof retryLesson); // Should be "function"
+
+// Check if elements exist before adding listeners
+if (nextLessonButton) {
+     console.log("nextLessonButton found, adding listener");
+     nextLessonButton.addEventListener('click', nextLesson);
+} else {
+     console.log("nextLessonButton not found");
+}
+
+if (prevLessonButton) {
+     console.log("prevLessonButton found, adding listener");
+     prevLessonButton.addEventListener('click', prevLesson);
+} else {
+     console.log("prevLessonButton not found");
+}
+
+if (retryLessonButton) {
+     console.log("retryLessonButton found, adding listener");
+     retryLessonButton.addEventListener('click', retryLesson);
+} else {
+     console.log("retryLessonButton not found");
+}
+
+
+// --- Initial Setup ---
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM fully loaded and parsed");
+
+    // Check if core elements were found (using the variables declared at the top)
+    // These should be found now that the script is at the end of the body
+    if (!boardElement || !nextLessonButton || !prevLessonButton || !retryLessonButton || !statusElement || !lessonNameElement || !lessonCategoryElement || !lessonDescriptionElement) {
+        console.error("One or more required HTML elements not found!");
+         if (statusElement) {
+             updateStatus("Error: Required HTML elements not found. Check your index.html.", 'incorrect');
+         } else {
+              console.error("Status element also not found.");
+         }
+        return; // Do NOT proceed if elements are missing
+    } else {
+        console.log("All required HTML elements found.");
+    }
+
+
+    // Load the first lesson when the page loads
+    if (typeof chessLessons !== 'undefined' && chessLessons && chessLessons.length > 0) {
+        console.log("Lessons data found, loading first lesson.");
+        loadLesson(0);
+    } else {
+        console.warn("Lessons data not found or is empty.");
+        updateStatus("No lessons defined in lessons.js", 'info');
+        disableUserInput(); // Ensure input is off if no lessons
+        updateNavigationButtons(); // Ensure buttons are disabled if no lessons
+    }
+});
