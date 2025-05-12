@@ -1,0 +1,1 @@
+// This is a placeholder. Download the real stockfish.js from https://github.com/niklasf/stockfish.js

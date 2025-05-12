@@ -1,0 +1,18 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #eef6f7;
+}
+
+#board {
+  margin: 20px auto;
+}
+
+/* Override board colors to blue-green */
+.square-55d63 {
+  background-color: #a2d5c6 !important; /* light square */
+}
+
+.square-3c89e {
+  background-color: #077b8a !important; /* dark square */
+}
