@@ -1,17 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>EimaChess</title>
-  <link rel="stylesheet" href="libs/chessboard-1.0.0.min.css">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EIMACHESS - Learn Chess</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessground@9.0.0/assets/chessground.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>EimaChess</h1>
-  <div id="board" style="width: 400px"></div>
+    <div class="container">
+        <h1>EIMACHESS - Learn Chess</h1>
 
-  <script src="libs/chess.js"></script>
-  <script src="libs/chessboard-1.0.0.min.js"></script>
-  <script src="app.js"></script>
+        <div class="lesson-info">
+            <h2 id="lesson-name"></h2>
+            <p><strong id="lesson-category"></strong></p>
+            <p id="lesson-description"></p>
+        </div>
+
+        <div id="board" class="merida blue"></div>
+
+        <div class="controls">
+            <button id="prev-lesson">Previous Lesson</button>
+            <button id="next-lesson">Next Lesson</button>
+            <button id="retry-lesson">Retry Lesson</button>
+        </div>
+
+        <div class="game-status">
+            <p id="status"></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chess.js@1.0.0/dist/chess.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chessground@9.0.0/dist/chessground.min.js"></script>
+    <script src="lessons.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
