@@ -1,4 +1,7 @@
-// lessons.js (Revised structure)
+console.log("lessons.js script is running");
+const chessLessons = [
+    // ... rest of your lessons data
+];// lessons.js (Revised structure)
 const chessLessons = [
     {
         id: 'tactic-1-fork',
