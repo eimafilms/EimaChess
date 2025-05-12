@@ -1,4 +1,7 @@
-// script.js
+console.log("script.js script is running");
+// --- Initialize Game State and Board ---
+let game = new Chess();
+// ... rest of your script.js code// script.js
 
 // --- Initialize Game State and Board ---
 let game = new Chess(); // Initialize chess.js game state
