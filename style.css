@@ -1,18 +1,102 @@
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background-color: #eef6f7;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px; /* Add some padding for smaller screens */
+    box-sizing: border-box; /* Include padding in element's total width/height */
 }
+
+.container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px; /* Limit container width */
+    width: 100%; /* Make it responsive */
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.lesson-info {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.lesson-info h2 {
+    margin: 0 0 5px 0;
+    color: #555;
+}
+
+.lesson-info p {
+    margin: 3px 0;
+    color: #666;
+    font-size: 0.9em;
+}
+
 
 #board {
-  margin: 20px auto;
+    width: 100%; /* Make board responsive */
+    height: 0;
+    padding-bottom: 100%; /* Maintain 1:1 aspect ratio */
+    margin: 20px auto;
+    border: 2px solid #333;
+    box-sizing: border-box; /* Include border in element size */
 }
 
-/* Override board colors to blue-green */
-.square-55d63 {
-  background-color: #a2d5c6 !important; /* light square */
+.controls {
+    margin-top: 20px;
+    display: flex; /* Use flexbox for buttons */
+    justify-content: center; /* Center buttons */
+    gap: 10px; /* Space between buttons */
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
 }
 
-.square-3c89e {
-  background-color: #077b8a !important; /* dark square */
+.controls button {
+    padding: 8px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #eee;
+    transition: background-color 0.2s ease;
+}
+
+.controls button:hover {
+    background-color: #ddd;
+}
+
+.controls button:active {
+    background-color: #ccc;
+}
+
+.controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+.game-status {
+    margin-top: 20px;
+    font-weight: bold;
+    min-height: 1.2em; /* Reserve space */
+}
+
+.status-correct {
+    color: green;
+}
+
+.status-incorrect {
+    color: red;
+}
+
+.status-info {
+     color: black;
 }
